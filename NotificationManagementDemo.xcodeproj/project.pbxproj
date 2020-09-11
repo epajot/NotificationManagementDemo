@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9D97D844250BE479007DF6E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E110DF221DDF4D1300A01E9A /* NotificationManagementDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotificationManagementDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E110DF251DDF4D1300A01E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E110DF271DDF4D1300A01E9A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +61,7 @@
 				E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */,
 				E110DF2E1DDF4D1300A01E9A /* LaunchScreen.storyboard */,
 				E110DF311DDF4D1300A01E9A /* Info.plist */,
+				9D97D844250BE479007DF6E9 /* README.md */,
 			);
 			path = NotificationManagementDemo;
 			sourceTree = "<group>";
