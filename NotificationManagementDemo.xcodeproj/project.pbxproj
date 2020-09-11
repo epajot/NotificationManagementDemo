@@ -104,10 +104,9 @@
 			};
 			buildConfigurationList = E110DF1D1DDF4D1300A01E9A /* Build configuration list for PBXProject "NotificationManagementDemo" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
