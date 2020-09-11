@@ -97,7 +97,7 @@
 					E110DF211DDF4D1300A01E9A = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = LHA84NAPNA;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1170;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -287,7 +287,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rudifa.NotificationManagementDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -301,7 +301,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rudifa.NotificationManagementDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
