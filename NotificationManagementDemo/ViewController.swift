@@ -36,12 +36,15 @@ class ViewController: UIViewController {
             UNUserNotificationCenter.current().add(
                 request, withCompletionHandler: nil)
         }
+        printClassAndFunc()
     }
     
     @IBAction func listNotification(_ sender: UIButton) {
+        printClassAndFunc()
     }
 
     @IBAction func removeNotification(_ sender: UIButton) {
+        printClassAndFunc()
     }
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,8 @@
 		E110DF2B1DDF4D1300A01E9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF291DDF4D1300A01E9A /* Main.storyboard */; };
 		E110DF2D1DDF4D1300A01E9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */; };
 		E110DF301DDF4D1300A01E9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF2E1DDF4D1300A01E9A /* LaunchScreen.storyboard */; };
+		EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF216F250FC91A002CD916 /* DateUtil.swift */; };
+		EADF2172250FC91A002CD916 /* DebugUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF2170250FC91A002CD916 /* DebugUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E110DF2F1DDF4D1300A01E9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E110DF311DDF4D1300A01E9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EADF216F250FC91A002CD916 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
+		EADF2170250FC91A002CD916 /* DebugUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,7 @@
 		E110DF241DDF4D1300A01E9A /* NotificationManagementDemo */ = {
 			isa = PBXGroup;
 			children = (
+				EADF216E250FC8B7002CD916 /* Util */,
 				E110DF251DDF4D1300A01E9A /* AppDelegate.swift */,
 				E110DF271DDF4D1300A01E9A /* ViewController.swift */,
 				E110DF291DDF4D1300A01E9A /* Main.storyboard */,
@@ -64,6 +69,15 @@
 				9D97D844250BE479007DF6E9 /* README.md */,
 			);
 			path = NotificationManagementDemo;
+			sourceTree = "<group>";
+		};
+		EADF216E250FC8B7002CD916 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				EADF216F250FC91A002CD916 /* DateUtil.swift */,
+				EADF2170250FC91A002CD916 /* DebugUtil.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -98,14 +112,13 @@
 				TargetAttributes = {
 					E110DF211DDF4D1300A01E9A = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = LHA84NAPNA;
 						LastSwiftMigration = 1170;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = E110DF1D1DDF4D1300A01E9A /* Build configuration list for PBXProject "NotificationManagementDemo" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 11.4";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -140,8 +153,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */,
 				E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */,
 				E110DF261DDF4D1300A01E9A /* AppDelegate.swift in Sources */,
+				EADF2172250FC91A002CD916 /* DebugUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +232,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -271,10 +286,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -284,9 +300,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = LHA84NAPNA;
+				DEVELOPMENT_TEAM = V7R356DGKL;
 				INFOPLIST_FILE = NotificationManagementDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rudifa.NotificationManagementDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -298,9 +317,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = LHA84NAPNA;
+				DEVELOPMENT_TEAM = V7R356DGKL;
 				INFOPLIST_FILE = NotificationManagementDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rudifa.NotificationManagementDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
