@@ -9,21 +9,24 @@
 import UIKit
 import UserNotifications
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     var isGrantedNotificationAccess = false
 
     @IBAction func setNotification(_ sender: UIButton) {
         if isGrantedNotificationAccess{
-            //set content
+//            let center = UNUserNotificationCenter.current() // EP's Badge Test
+//            //set content
             let content = UNMutableNotificationContent()
             content.title = "My Notification Management Demo"
             content.subtitle = "Timed Notification"
             content.body = "Notification pressed"
             content.categoryIdentifier = "message"
+            content.badge = 1 // EP's Badge Test
+            content.sound = UNNotificationSound.default // EP's Badge Test
             
             //set trigger
             let trigger = UNTimeIntervalNotificationTrigger(
-                timeInterval: 10.0,
+                timeInterval: 5,
                 repeats: false)
             
             //Create the request
@@ -32,6 +35,11 @@ class ViewController: UIViewController {
                 content: content,
                 trigger: trigger
             )
+            
+            UNUserNotificationCenter.current().delegate = self
+            
+//            center.add(request)
+            
             //Schedule the request
             UNUserNotificationCenter.current().add(
                 request, withCompletionHandler: nil)
@@ -58,5 +66,12 @@ class ViewController: UIViewController {
                 }
         })
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+        //displaying the ios local notification when app is in foreground
+        completionHandler([.alert, .badge, .sound])
+    }
+    
 }
 
