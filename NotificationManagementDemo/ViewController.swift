@@ -11,9 +11,9 @@ import UserNotifications
 
 class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     var isGrantedNotificationAccess = false
-
+    
     @IBAction func setNotification(_ sender: UIButton) {
-        if isGrantedNotificationAccess{
+        if isGrantedNotificationAccess {
 //            let center = UNUserNotificationCenter.current() // EP's Badge Test
 //            //set content
             let content = UNMutableNotificationContent()
@@ -24,54 +24,61 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
             content.badge = 1 // EP's Badge Test
             content.sound = UNNotificationSound.default // EP's Badge Test
             
-            //set trigger
+            // set trigger
             let trigger = UNTimeIntervalNotificationTrigger(
                 timeInterval: 5,
                 repeats: false)
             
-            //Create the request
+            // Create the request
             let request = UNNotificationRequest(
-                identifier: "my.notification",
+                identifier: "\(Date())", // EP's Badge Test
                 content: content,
-                trigger: trigger
-            )
+                trigger: trigger)
             
             UNUserNotificationCenter.current().delegate = self
             
 //            center.add(request)
             
-            //Schedule the request
+            // Schedule the request
             UNUserNotificationCenter.current().add(
                 request, withCompletionHandler: nil)
         }
         printClassAndFunc()
     }
     
-    @IBAction func listNotification(_ sender: UIButton) {
-        printClassAndFunc()
+    @IBAction func listPendingNotification(_ sender: UIButton) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            print("Pending Notification List \(requests)")
+        }
     }
-
+    
+    @IBAction func listNotification(_ sender: UIButton) {        
+        UNUserNotificationCenter.current().getDeliveredNotifications { requests in
+            print("Delivered Notification List \(requests)")
+        }
+    }
+    
     @IBAction func removeNotification(_ sender: UIButton) {
-        printClassAndFunc()
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        print("Delivered Notification List Cleaned..")
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         UNUserNotificationCenter.current().requestAuthorization(
-            options: [.alert,.sound,.badge],
-            completionHandler: { (granted,error) in
+            options: [.alert, .sound, .badge],
+            completionHandler: { granted, _ in
                 self.isGrantedNotificationAccess = granted
-                if !granted{
-                    //add alert to complain
+                if !granted {
+                    // add alert to complain
                 }
         })
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-        //displaying the ios local notification when app is in foreground
+        // displaying the ios local notification when app is in foreground
         completionHandler([.alert, .badge, .sound])
     }
-    
 }
-
