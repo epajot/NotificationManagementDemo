@@ -48,20 +48,25 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     
     @IBAction func listPendingNotification(_ sender: UIButton) {
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            print("Pending Notification Count \(requests.count)")
             print("Pending Notification List \(requests)")
+            
         }
     }
     
     @IBAction func listNotification(_ sender: UIButton) {        
         UNUserNotificationCenter.current().getDeliveredNotifications { requests in
+            print("Delivered Notification Count \(requests.count)")
             print("Delivered Notification List \(requests)")
+            
+            
         }
     }
     
     @IBAction func removeNotification(_ sender: UIButton) {
         UIApplication.shared.applicationIconBadgeNumber = 0
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-        print("Delivered Notification List Cleaned..")
+        print("Delivered Notification List & Badge Clear..")
     }
     
     override func viewDidLoad() {

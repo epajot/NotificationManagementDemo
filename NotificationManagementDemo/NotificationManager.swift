@@ -9,20 +9,19 @@
 import UserNotifications
 
 class NotificationManager {
-    
     static let shared = NotificationManager()
-    
-    private (set) var authorized = false
-    
+
+    private(set) var authorized = false
+
     func requestAuthorization() {
         let center = UNUserNotificationCenter.current()
 
         center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             if granted {
                 self.authorized = true
-                print("Authorization OK")
+                print("Notifications Accepted")
             } else {
-                print("Authorization not OK")
+                print("Notifications not Accepted")
             }
         }
     }
@@ -39,12 +38,12 @@ class NotificationManager {
         content.sound = UNNotificationSound.default
 
 //        let nextTriggerDate = Date()
-        
+
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
 //        print(trigger.nextTriggerDate())
-        
+
 //        dateComponents.hour = 16
 //        dateComponents.minute = 15
 //        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 30, repeats: false)
@@ -52,9 +51,8 @@ class NotificationManager {
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         center.add(request)
-        
     }
-    
+
 //    // EP's Test - WIP
 //    func getPendingNotificationRequests(completionHandler: @escaping ([UNNotificationRequest]) -> Void) {
 //        let center = UNUserNotificationCenter.current()
