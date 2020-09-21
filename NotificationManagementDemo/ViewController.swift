@@ -56,6 +56,7 @@ class ViewController: UIViewController, UNUserNotificationCenterDelegate {
     @IBAction func listNotification(_ sender: UIButton) {
         UNUserNotificationCenter.current().getDeliveredNotifications { requests in
             print("Delivered Notification Count \(requests.count)")
+            UIApplication.shared.applicationIconBadgeNumber = requests.count
 //            print("Delivered Notification List \(requests)")
         }
     }
