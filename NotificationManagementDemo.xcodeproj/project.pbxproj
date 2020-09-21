@@ -12,7 +12,6 @@
 		E110DF2B1DDF4D1300A01E9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF291DDF4D1300A01E9A /* Main.storyboard */; };
 		E110DF2D1DDF4D1300A01E9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */; };
 		E110DF301DDF4D1300A01E9A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF2E1DDF4D1300A01E9A /* LaunchScreen.storyboard */; };
-		EA645CD9250FDB4B002FC84B /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA645CD8250FDB4B002FC84B /* NotificationManager.swift */; };
 		EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF216F250FC91A002CD916 /* DateUtil.swift */; };
 		EADF2172250FC91A002CD916 /* DebugUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF2170250FC91A002CD916 /* DebugUtil.swift */; };
 /* End PBXBuildFile section */
@@ -158,7 +157,6 @@
 			files = (
 				EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */,
 				E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */,
-				EA645CD9250FDB4B002FC84B /* NotificationManager.swift in Sources */,
 				E110DF261DDF4D1300A01E9A /* AppDelegate.swift in Sources */,
 				EADF2172250FC91A002CD916 /* DebugUtil.swift in Sources */,
 			);
