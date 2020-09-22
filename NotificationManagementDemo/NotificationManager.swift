@@ -41,6 +41,7 @@ class NotificationManager: NSObject {
             }
             self.printClassAndFunc(info: granted ? "Notifications allowed" : "Notifications NOT allowed")
         }
+        //runForever()
     }
 
     /// Schedule a notification
@@ -140,15 +141,16 @@ class NotificationManager: NSObject {
 
         UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
             self.printClassAndFunc(info: "Delivered  \(notifications.count)")
-            for notification: UNNotification in notifications {
-                let identifier = notification.request.identifier
-                print("  id: \(identifier) \(isCurrentBooking(string: identifier))")
-            }
+//            for notification: UNNotification in notifications {
+//                let identifier = notification.request.identifier
+//                print("  id: \(identifier) \(isCurrentBooking(string: identifier))")
+//            }
 
             let currentBookings = notifications.filter { isCurrentBooking(string: $0.request.identifier) }
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = currentBookings.count
             }
+            self.printClassAndFunc(info: "Delivered: \(notifications.count) current: \(currentBookings.count)")
         }
     }
 
@@ -188,6 +190,12 @@ class NotificationManager: NSObject {
         updatePendingCount()
         updateDeliveredCount()
     }
+
+    func runForever() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            self.updateBadge()
+        }
+    }
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -198,7 +206,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
         updateBothCounts()
-        updateBadge()
+//        updateBadge()
         completionHandler([.alert, .badge, .sound])
     }
 
