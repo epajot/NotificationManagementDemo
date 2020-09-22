@@ -105,6 +105,53 @@ class NotificationManager: NSObject {
         }
     }
 
+    func updateBadge() {
+        func dateFromString(str: String) -> Date? {
+            let dateFormat = "dd.MM.yyyy HH:mm:ss"
+            // "22.09.2020 16:50:26 to 22.09.2020 16:50:36"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = dateFormat
+            dateFormatter.timeZone = TimeZone.current
+
+            let date = dateFormatter.date(from: str)
+            return date
+        }
+
+        func twoDateStringsFromString(str: String) -> [String] {
+            let components = str.components(separatedBy: " to ")
+            return components
+        }
+
+        func isCurrentBooking(string: String) -> Bool {
+            let dateStrings = twoDateStringsFromString(str: string)
+            if dateStrings.count == 2 {
+                let dates = dateStrings.map { dateFromString(str: $0) }
+
+                if let start = dates[0], let end = dates[1] {
+                    print("  dates: \(start.ddMMyyyy_HHmmss) \(end.ddMMyyyy_HHmmss)")
+
+                    let now = Date()
+                    let isCurrentBooking = start <= now && now <= end
+                    return isCurrentBooking
+                }
+            }
+            return false
+        }
+
+        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
+            self.printClassAndFunc(info: "Delivered  \(notifications.count)")
+            for notification: UNNotification in notifications {
+                let identifier = notification.request.identifier
+                print("  id: \(identifier) \(isCurrentBooking(string: identifier))")
+            }
+
+            let currentBookings = notifications.filter { isCurrentBooking(string: $0.request.identifier) }
+            DispatchQueue.main.async {
+                UIApplication.shared.applicationIconBadgeNumber = currentBookings.count
+            }
+        }
+    }
+
     // MARK: count query helpers
 
     private func updatePendingCount() {
@@ -151,6 +198,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
         updateBothCounts()
+        updateBadge()
         completionHandler([.alert, .badge, .sound])
     }
 
