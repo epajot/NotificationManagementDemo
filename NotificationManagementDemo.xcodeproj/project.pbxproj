@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D62D31225193B8900C1451A /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA645CD8250FDB4B002FC84B /* NotificationManager.swift */; };
+		9D894430251B840D00BE8A35 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
 		E110DF261DDF4D1300A01E9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF251DDF4D1300A01E9A /* AppDelegate.swift */; };
 		E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF271DDF4D1300A01E9A /* ViewController.swift */; };
 		E110DF2B1DDF4D1300A01E9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF291DDF4D1300A01E9A /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9D89442F251B840D00BE8A35 /* CodableUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableUtil.swift; sourceTree = "<group>"; };
 		9D97D844250BE479007DF6E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E110DF221DDF4D1300A01E9A /* NotificationManagementDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotificationManagementDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E110DF251DDF4D1300A01E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		EADF216E250FC8B7002CD916 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				9D89442F251B840D00BE8A35 /* CodableUtil.swift */,
 				EADF216F250FC91A002CD916 /* DateUtil.swift */,
 				EADF2170250FC91A002CD916 /* DebugUtil.swift */,
 			);
@@ -156,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D894430251B840D00BE8A35 /* CodableUtil.swift in Sources */,
 				EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */,
 				E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */,
 				9D62D31225193B8900C1451A /* NotificationManager.swift in Sources */,

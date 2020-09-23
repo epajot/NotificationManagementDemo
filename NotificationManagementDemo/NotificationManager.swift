@@ -14,6 +14,53 @@ struct NotificationCounts {
     var delivered: Int
 }
 
+struct DateTriplet: Codable {
+    var start: Date
+    var now: Date
+    var end: Date
+
+}
+
+struct TimeSpanNotification: Codable {
+    var title: String
+    var message: String
+    var start: Date
+    var end: Date
+
+    /**
+     observed on simulator and on iPhone:
+     - Date() returns a value that is about 0.025 seconds after a full second
+     - notification is delivered up to 0.7 s before the scheduled time
+     - so, diff = now.timeIntervalSince(start) is rarely positive, mostly negative
+     */
+    var isCurrent: Bool {
+        let now = Date()
+        let diff = now.timeIntervalSince(start)
+        let string: String? = DateTriplet(start: start, now: now, end: end).encode()
+        let isCurrent = start.incremented(by: .second, times: -2) <= now && now <= end
+        print("\(string!) isCurrent= \(isCurrent) diff= \(diff)")
+        return isCurrent
+    }
+}
+
+extension TimeSpanNotification {
+    init(title: String, message: String, timeSpan: DateInterval) {
+        self.title = title
+        self.message = message
+        start = timeSpan.start
+        end = timeSpan.end
+    }
+
+    init?(from string: String) {
+        guard let this = Self.decode(from: string) else { return nil }
+        self = this
+    }
+
+    var string: String? {
+        return encode()
+    }
+}
+
 class NotificationManager: NSObject {
     // MARK: private vars
 
@@ -41,7 +88,7 @@ class NotificationManager: NSObject {
             }
             self.printClassAndFunc(info: granted ? "Notifications allowed" : "Notifications NOT allowed")
         }
-        //runForever()
+        // runForever()
     }
 
     /// Schedule a notification
@@ -107,46 +154,8 @@ class NotificationManager: NSObject {
     }
 
     func updateBadge() {
-        func dateFromString(str: String) -> Date? {
-            let dateFormat = "dd.MM.yyyy HH:mm:ss"
-            // "22.09.2020 16:50:26 to 22.09.2020 16:50:36"
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = dateFormat
-            dateFormatter.timeZone = TimeZone.current
-
-            let date = dateFormatter.date(from: str)
-            return date
-        }
-
-        func twoDateStringsFromString(str: String) -> [String] {
-            let components = str.components(separatedBy: " to ")
-            return components
-        }
-
-        func isCurrentBooking(string: String) -> Bool {
-            let dateStrings = twoDateStringsFromString(str: string)
-            if dateStrings.count == 2 {
-                let dates = dateStrings.map { dateFromString(str: $0) }
-
-                if let start = dates[0], let end = dates[1] {
-                    print("  dates: \(start.ddMMyyyy_HHmmss) \(end.ddMMyyyy_HHmmss)")
-
-                    let now = Date()
-                    let isCurrentBooking = start <= now && now <= end
-                    return isCurrentBooking
-                }
-            }
-            return false
-        }
-
         UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
-            self.printClassAndFunc(info: "Delivered  \(notifications.count)")
-//            for notification: UNNotification in notifications {
-//                let identifier = notification.request.identifier
-//                print("  id: \(identifier) \(isCurrentBooking(string: identifier))")
-//            }
-
-            let currentBookings = notifications.filter { isCurrentBooking(string: $0.request.identifier) }
+            let currentBookings = notifications.filter { (TimeSpanNotification(from: $0.request.identifier)?.isCurrent ?? false) }
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = currentBookings.count
             }
@@ -192,7 +201,7 @@ class NotificationManager: NSObject {
     }
 
     func runForever() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             self.updateBadge()
         }
     }
@@ -206,7 +215,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
         updateBothCounts()
-//        updateBadge()
+        updateBadge()
         completionHandler([.alert, .badge, .sound])
     }
 
