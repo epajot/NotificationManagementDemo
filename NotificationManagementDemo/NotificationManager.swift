@@ -18,7 +18,6 @@ struct DateTriplet: Codable {
     var start: Date
     var now: Date
     var end: Date
-
 }
 
 struct TimeSpanNotification: Codable {
@@ -44,9 +43,9 @@ struct TimeSpanNotification: Codable {
 }
 
 extension TimeSpanNotification {
-    init(title: String, message: String, timeSpan: DateInterval) {
+    init(title: String, body: String, timeSpan: DateInterval) {
         self.title = title
-        self.message = message
+        message = body
         start = timeSpan.start
         end = timeSpan.end
     }
@@ -88,43 +87,50 @@ class NotificationManager: NSObject {
             }
             self.printClassAndFunc(info: granted ? "Notifications allowed" : "Notifications NOT allowed")
         }
-        // runForever()
+        // runForever() // experimental
     }
 
     /// Schedule a notification
     /// - Parameters:
-    ///   - targetDate:
-    ///   - identifier:
-    func addNotification(at targetDate: Date, identifier: String) {
-        if authorized {
-            // set content
-            let content = UNMutableNotificationContent()
-            content.title = "Your booked period started"
-            content.subtitle = ""
-            content.body = ""
-            content.categoryIdentifier = "message"
-            content.badge = 1 // EP's Badge Test
-            content.sound = UNNotificationSound.default // EP's Badge Test
+    ///   - title: for notification alert
+    ///   - body: text for notification alert
+    ///   - interval: the associated time period where interval.start is the notifucation trigger time
+    func addNotification(title: String, body: String, for interval: DateInterval) {
+        if !authorized {
+            return
+        }
 
-            // set a calendar trigger
-            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: targetDate)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        guard let identifier = TimeSpanNotification(title: title, body: body, timeSpan: interval).string else {
+            return
+        }
 
-            // Create the request
-            let request = UNNotificationRequest(
-                identifier: identifier,
-                content: content,
-                trigger: trigger
-            )
+        // set content
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.subtitle = ""
+        content.body = body
+        content.categoryIdentifier = "message"
+        content.badge = 1 // EP's Badge Test
+        content.sound = UNNotificationSound.default // EP's Badge Test
 
-            // Schedule the request
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    self.printClassAndFunc(info: "\(String(describing: error))")
-                } else {
-                    // DispatchQueue.main.async { self.updateCounts() }
-                    self.updatePendingCount()
-                }
+        // set a calendar trigger
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: interval.start)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+
+        // Create the request
+        let request = UNNotificationRequest(
+            identifier: identifier,
+            content: content,
+            trigger: trigger
+        )
+
+        // Schedule the request
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                self.printClassAndFunc(info: "\(String(describing: error))")
+            } else {
+                // DispatchQueue.main.async { self.updateCounts() }
+                self.updatePendingCount()
             }
         }
     }

@@ -63,9 +63,9 @@ class ViewController: UIViewController {
         bookings.append(booking)
         tableView.reloadData()
 
-        let tsNotification = TimeSpanNotification(title: "SomeCalendar", message: "Your booking Starts now", timeSpan: booking.interval)
-        // printClassAndFunc(info: tsNotification.string!)
-        NotificationManager.shared.addNotification(at: booking.interval.start, identifier: tsNotification.string!)
+        let title = "SomeCalendar"
+        let body = "Your booking Starts now"
+        NotificationManager.shared.addNotification(title: title, body: body, for: booking.interval)
     }
 
     @IBAction func removeAllDeliveredNotifications(_: UIButton) {
