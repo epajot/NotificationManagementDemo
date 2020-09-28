@@ -11,10 +11,10 @@
 		9D06C4AA25222CF60091BC17 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
 		9D06C4AD25222CF90091BC17 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF216F250FC91A002CD916 /* DateUtil.swift */; };
 		9D06C4B025222CFC0091BC17 /* DebugUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF2170250FC91A002CD916 /* DebugUtil.swift */; };
-		9D06C4B325222CFF0091BC17 /* TimeSpanNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */; };
+		9D06C4B325222CFF0091BC17 /* NotificationTimeSpan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* NotificationTimeSpan.swift */; };
 		9D62D31225193B8900C1451A /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA645CD8250FDB4B002FC84B /* NotificationManager.swift */; };
 		9D894430251B840D00BE8A35 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
-		9D9792FE25220F0800A3B6C3 /* TimeSpanNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */; };
+		9D9792FE25220F0800A3B6C3 /* NotificationTimeSpan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* NotificationTimeSpan.swift */; };
 		E110DF261DDF4D1300A01E9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF251DDF4D1300A01E9A /* AppDelegate.swift */; };
 		E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF271DDF4D1300A01E9A /* ViewController.swift */; };
 		E110DF2B1DDF4D1300A01E9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF291DDF4D1300A01E9A /* Main.storyboard */; };
@@ -39,7 +39,7 @@
 		9D06C49025222C590091BC17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D06C4A625222CE80091BC17 /* NotificationTimeSpanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTimeSpanTests.swift; sourceTree = "<group>"; };
 		9D89442F251B840D00BE8A35 /* CodableUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableUtil.swift; sourceTree = "<group>"; };
-		9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeSpanNotification.swift; sourceTree = "<group>"; };
+		9D9792FD25220F0800A3B6C3 /* NotificationTimeSpan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTimeSpan.swift; sourceTree = "<group>"; };
 		9D97D844250BE479007DF6E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E110DF221DDF4D1300A01E9A /* NotificationManagementDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotificationManagementDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E110DF251DDF4D1300A01E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				9D89442F251B840D00BE8A35 /* CodableUtil.swift */,
 				EADF216F250FC91A002CD916 /* DateUtil.swift */,
 				EADF2170250FC91A002CD916 /* DebugUtil.swift */,
-				9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */,
+				9D9792FD25220F0800A3B6C3 /* NotificationTimeSpan.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -233,7 +233,7 @@
 				9D06C4AA25222CF60091BC17 /* CodableUtil.swift in Sources */,
 				9D06C4A725222CE80091BC17 /* NotificationTimeSpanTests.swift in Sources */,
 				9D06C4B025222CFC0091BC17 /* DebugUtil.swift in Sources */,
-				9D06C4B325222CFF0091BC17 /* TimeSpanNotification.swift in Sources */,
+				9D06C4B325222CFF0091BC17 /* NotificationTimeSpan.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,7 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D9792FE25220F0800A3B6C3 /* TimeSpanNotification.swift in Sources */,
+				9D9792FE25220F0800A3B6C3 /* NotificationTimeSpan.swift in Sources */,
 				9D894430251B840D00BE8A35 /* CodableUtil.swift in Sources */,
 				EADF2171250FC91A002CD916 /* DateUtil.swift in Sources */,
 				E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */,

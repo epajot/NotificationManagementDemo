@@ -54,7 +54,7 @@ class NotificationManager: NSObject {
             return
         }
 
-        guard let identifier = TimeSpanNotification(title: title, body: body, timeSpan: interval).string else {
+        guard let identifier = NotificationTimeSpan(title: title, body: body, timeSpan: interval).string else {
             return
         }
 
@@ -118,7 +118,7 @@ class NotificationManager: NSObject {
 
             // update badge count to the number of current notifications
 
-            let currentNotifications = notifications.filter { (TimeSpanNotification(from: $0.request.identifier)?.isCurrent ?? false) }
+            let currentNotifications = notifications.filter { (NotificationTimeSpan(from: $0.request.identifier)?.isCurrent ?? false) }
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = currentNotifications.count
             }
@@ -126,7 +126,7 @@ class NotificationManager: NSObject {
             // remove obsolete (not current) notifications
 
             let identifiers = notifications.map({ $0.request.identifier })
-            let identifiersNotCurrent = identifiers.filter({ !(TimeSpanNotification(from: $0)?.isCurrent ?? true) })
+            let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
             self.currentCenter.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
 
             self.printClassAndFunc(info: "delivered: \(notifications.count) current: \(currentNotifications.count)")
@@ -185,7 +185,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
         updateBothCounts()
-        // updateBadge()
+        updateBadgeAndCounts()
         completionHandler([.alert, .badge, .sound])
     }
 

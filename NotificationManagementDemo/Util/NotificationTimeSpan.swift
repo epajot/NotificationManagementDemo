@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TimeSpanNotification: Codable, Equatable {
+struct NotificationTimeSpan: Codable, Equatable {
     var title: String
     var message: String
     var start: Date
@@ -27,7 +27,7 @@ struct TimeSpanNotification: Codable, Equatable {
     }
 }
 
-extension TimeSpanNotification {
+extension NotificationTimeSpan {
     init(title: String, body: String, timeSpan: DateInterval) {
         self.title = title
         message = body
