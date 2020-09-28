@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D06C4A725222CE80091BC17 /* NotificationTimeSpanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D06C4A625222CE80091BC17 /* NotificationTimeSpanTests.swift */; };
+		9D06C4AA25222CF60091BC17 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
+		9D06C4AD25222CF90091BC17 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF216F250FC91A002CD916 /* DateUtil.swift */; };
+		9D06C4B025222CFC0091BC17 /* DebugUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF2170250FC91A002CD916 /* DebugUtil.swift */; };
+		9D06C4B325222CFF0091BC17 /* TimeSpanNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */; };
 		9D62D31225193B8900C1451A /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA645CD8250FDB4B002FC84B /* NotificationManager.swift */; };
 		9D894430251B840D00BE8A35 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
 		9D9792FE25220F0800A3B6C3 /* TimeSpanNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */; };
-		9D97931525220F8E00A3B6C3 /* TimeSpanNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D97931425220F8E00A3B6C3 /* TimeSpanNotificationTests.swift */; };
-		9D97931825220FA200A3B6C3 /* TimeSpanNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */; };
-		9DF8330C2522244100581775 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF216F250FC91A002CD916 /* DateUtil.swift */; };
-		9DF8330F2522244500581775 /* CodableUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D89442F251B840D00BE8A35 /* CodableUtil.swift */; };
-		9DF833122522244900581775 /* DebugUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADF2170250FC91A002CD916 /* DebugUtil.swift */; };
 		E110DF261DDF4D1300A01E9A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF251DDF4D1300A01E9A /* AppDelegate.swift */; };
 		E110DF281DDF4D1300A01E9A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E110DF271DDF4D1300A01E9A /* ViewController.swift */; };
 		E110DF2B1DDF4D1300A01E9A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E110DF291DDF4D1300A01E9A /* Main.storyboard */; };
@@ -25,7 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9D97930925220F3900A3B6C3 /* PBXContainerItemProxy */ = {
+		9D06C49125222C590091BC17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E110DF1A1DDF4D1300A01E9A /* Project object */;
 			proxyType = 1;
@@ -35,11 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9D06C48C25222C590091BC17 /* NotificationManagementDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotificationManagementDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D06C49025222C590091BC17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D06C4A625222CE80091BC17 /* NotificationTimeSpanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTimeSpanTests.swift; sourceTree = "<group>"; };
 		9D89442F251B840D00BE8A35 /* CodableUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableUtil.swift; sourceTree = "<group>"; };
 		9D9792FD25220F0800A3B6C3 /* TimeSpanNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeSpanNotification.swift; sourceTree = "<group>"; };
-		9D97930425220F3900A3B6C3 /* TimeSpanNotificationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeSpanNotificationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D97930825220F3900A3B6C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D97931425220F8E00A3B6C3 /* TimeSpanNotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeSpanNotificationTests.swift; sourceTree = "<group>"; };
 		9D97D844250BE479007DF6E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E110DF221DDF4D1300A01E9A /* NotificationManagementDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotificationManagementDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E110DF251DDF4D1300A01E9A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -54,7 +54,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9D97930125220F3900A3B6C3 /* Frameworks */ = {
+		9D06C48925222C590091BC17 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -71,20 +71,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9D97930525220F3900A3B6C3 /* TimeSpanNotificationTests */ = {
+		9D06C48D25222C590091BC17 /* NotificationManagementDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				9D97931425220F8E00A3B6C3 /* TimeSpanNotificationTests.swift */,
-				9D97930825220F3900A3B6C3 /* Info.plist */,
+				9D06C4A625222CE80091BC17 /* NotificationTimeSpanTests.swift */,
+				9D06C49025222C590091BC17 /* Info.plist */,
 			);
-			path = TimeSpanNotificationTests;
+			path = NotificationManagementDemoTests;
 			sourceTree = "<group>";
 		};
 		E110DF191DDF4D1300A01E9A = {
 			isa = PBXGroup;
 			children = (
 				E110DF241DDF4D1300A01E9A /* NotificationManagementDemo */,
-				9D97930525220F3900A3B6C3 /* TimeSpanNotificationTests */,
+				9D06C48D25222C590091BC17 /* NotificationManagementDemoTests */,
 				E110DF231DDF4D1300A01E9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,7 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				E110DF221DDF4D1300A01E9A /* NotificationManagementDemo.app */,
-				9D97930425220F3900A3B6C3 /* TimeSpanNotificationTests.xctest */,
+				9D06C48C25222C590091BC17 /* NotificationManagementDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,22 +128,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D97930325220F3900A3B6C3 /* TimeSpanNotificationTests */ = {
+		9D06C48B25222C590091BC17 /* NotificationManagementDemoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D97930B25220F3900A3B6C3 /* Build configuration list for PBXNativeTarget "TimeSpanNotificationTests" */;
+			buildConfigurationList = 9D06C49325222C590091BC17 /* Build configuration list for PBXNativeTarget "NotificationManagementDemoTests" */;
 			buildPhases = (
-				9D97930025220F3900A3B6C3 /* Sources */,
-				9D97930125220F3900A3B6C3 /* Frameworks */,
-				9D97930225220F3900A3B6C3 /* Resources */,
+				9D06C48825222C590091BC17 /* Sources */,
+				9D06C48925222C590091BC17 /* Frameworks */,
+				9D06C48A25222C590091BC17 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9D97930A25220F3900A3B6C3 /* PBXTargetDependency */,
+				9D06C49225222C590091BC17 /* PBXTargetDependency */,
 			);
-			name = TimeSpanNotificationTests;
-			productName = TimeSpanNotificationTests;
-			productReference = 9D97930425220F3900A3B6C3 /* TimeSpanNotificationTests.xctest */;
+			name = NotificationManagementDemoTests;
+			productName = NotificationManagementDemoTests;
+			productReference = 9D06C48C25222C590091BC17 /* NotificationManagementDemoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E110DF211DDF4D1300A01E9A /* NotificationManagementDemo */ = {
@@ -173,7 +173,7 @@
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Steven Lipton";
 				TargetAttributes = {
-					9D97930325220F3900A3B6C3 = {
+					9D06C48B25222C590091BC17 = {
 						CreatedOnToolsVersion = 12.0.1;
 						LastSwiftMigration = 1200;
 						TestTargetID = E110DF211DDF4D1300A01E9A;
@@ -199,13 +199,13 @@
 			projectRoot = "";
 			targets = (
 				E110DF211DDF4D1300A01E9A /* NotificationManagementDemo */,
-				9D97930325220F3900A3B6C3 /* TimeSpanNotificationTests */,
+				9D06C48B25222C590091BC17 /* NotificationManagementDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9D97930225220F3900A3B6C3 /* Resources */ = {
+		9D06C48A25222C590091BC17 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -225,15 +225,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9D97930025220F3900A3B6C3 /* Sources */ = {
+		9D06C48825222C590091BC17 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DF8330F2522244500581775 /* CodableUtil.swift in Sources */,
-				9DF8330C2522244100581775 /* DateUtil.swift in Sources */,
-				9D97931525220F8E00A3B6C3 /* TimeSpanNotificationTests.swift in Sources */,
-				9D97931825220FA200A3B6C3 /* TimeSpanNotification.swift in Sources */,
-				9DF833122522244900581775 /* DebugUtil.swift in Sources */,
+				9D06C4AD25222CF90091BC17 /* DateUtil.swift in Sources */,
+				9D06C4AA25222CF60091BC17 /* CodableUtil.swift in Sources */,
+				9D06C4A725222CE80091BC17 /* NotificationTimeSpanTests.swift in Sources */,
+				9D06C4B025222CFC0091BC17 /* DebugUtil.swift in Sources */,
+				9D06C4B325222CFF0091BC17 /* TimeSpanNotification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,10 +254,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9D97930A25220F3900A3B6C3 /* PBXTargetDependency */ = {
+		9D06C49225222C590091BC17 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E110DF211DDF4D1300A01E9A /* NotificationManagementDemo */;
-			targetProxy = 9D97930925220F3900A3B6C3 /* PBXContainerItemProxy */;
+			targetProxy = 9D06C49125222C590091BC17 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -281,7 +281,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		9D97930C25220F3900A3B6C3 /* Debug */ = {
+		9D06C49425222C590091BC17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -293,7 +293,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LHA84NAPNA;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = TimeSpanNotificationTests/Info.plist;
+				INFOPLIST_FILE = NotificationManagementDemoTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -302,7 +302,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ch.rudifa.TimeSpanNotificationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.rudifa.NotificationManagementDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -311,7 +311,7 @@
 			};
 			name = Debug;
 		};
-		9D97930D25220F3900A3B6C3 /* Release */ = {
+		9D06C49525222C590091BC17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -323,7 +323,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LHA84NAPNA;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = TimeSpanNotificationTests/Info.plist;
+				INFOPLIST_FILE = NotificationManagementDemoTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,7 +331,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ch.rudifa.TimeSpanNotificationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.rudifa.NotificationManagementDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -492,11 +492,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D97930B25220F3900A3B6C3 /* Build configuration list for PBXNativeTarget "TimeSpanNotificationTests" */ = {
+		9D06C49325222C590091BC17 /* Build configuration list for PBXNativeTarget "NotificationManagementDemoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D97930C25220F3900A3B6C3 /* Debug */,
-				9D97930D25220F3900A3B6C3 /* Release */,
+				9D06C49425222C590091BC17 /* Debug */,
+				9D06C49525222C590091BC17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
