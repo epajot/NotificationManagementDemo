@@ -1,5 +1,5 @@
 //
-//  TimeSpanNotification.swift
+//  NotificationTimeSpan.swift
 //  StickPlan
 //
 //  Created by Rudolf Farkas on 24.09.20.

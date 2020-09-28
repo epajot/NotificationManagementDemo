@@ -12,30 +12,35 @@ import UserNotifications
 struct NotificationCounts {
     var pending: Int
     var delivered: Int
+    var current: Int
+
+    var string: String {
+        return "pending: \(pending), delivered: \(delivered), current: \(current)"
+    }
 }
 
 class NotificationManager: NSObject {
     // MARK: private vars
 
-    private let currentCenter = UNUserNotificationCenter.current()
+    private let center = UNUserNotificationCenter.current()
 
     private(set) var authorized = false
-
-    private var notificationCounts = NotificationCounts(pending: 0, delivered: 0)
 
     // MARK: public API
 
     static let shared = NotificationManager()
 
-    /// The controller interested in counts shall provide a callback
-    var updateDiagnosticCounts: ((NotificationCounts) -> Void)? {
-        didSet { updateBothCounts() }
+    /// The controller interested in counts shall set a callback here
+    var updateClientDiagnosticCounts: ((NotificationCounts) -> Void)? {
+        didSet {
+            retrieveDiagnosticCounts()
+        }
     }
 
     /// Connect to UNUserNotificationCenter and get authorization from user
     func initializeAtAppStart() {
-        currentCenter.delegate = self
-        currentCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             if granted {
                 self.authorized = true
             }
@@ -84,7 +89,7 @@ class NotificationManager: NSObject {
             if let error = error {
                 self.printClassAndFunc(info: "\(String(describing: error))")
             } else {
-                self.updatePendingCount()
+                self.retrieveDiagnosticCounts()
             }
         }
     }
@@ -93,16 +98,16 @@ class NotificationManager: NSObject {
     /// - Parameter id: target notification id
     func removeNotificationRequest(with id: String) {
         // executes asynchronously, has no callback to report completion
-        currentCenter.removePendingNotificationRequests(withIdentifiers: [id])
+        center.removePendingNotificationRequests(withIdentifiers: [id])
         // this launches query for pending notifications, there might be a race
-        updatePendingCount()
+        retrieveDiagnosticCounts()
     }
 
     /// Clear the list of delivered notifications
     func removeAllDeliveredNotifications() {
-        currentCenter.removeAllDeliveredNotifications()
+        center.removeAllDeliveredNotifications()
         printClassAndFunc()
-        updateDeliveredCount()
+        retrieveDiagnosticCounts()
     }
 
     /// Clear the badge
@@ -114,67 +119,34 @@ class NotificationManager: NSObject {
     }
 
     func updateBadgeAndCounts() {
-        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
+        UNUserNotificationCenter.current().getDeliveredNotifications { delivered in
 
             // update badge count to the number of current notifications
 
-            let currentNotifications = notifications.filter { (NotificationTimeSpan(from: $0.request.identifier)?.isCurrent ?? false) }
+            let currentNotifications = delivered.filter { (NotificationTimeSpan(from: $0.request.identifier)?.isCurrent ?? false) }
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = currentNotifications.count
             }
 
             // remove obsolete (not current) notifications
 
-            let identifiers = notifications.map({ $0.request.identifier })
+            let identifiers = delivered.map({ $0.request.identifier })
             let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
-            self.currentCenter.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
+            self.center.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
 
-            self.printClassAndFunc(info: "delivered: \(notifications.count) current: \(currentNotifications.count)")
+            self.retrieveDiagnosticCounts()
+
+            self.printClassAndFunc(info: "delivered: \(delivered.count) current: \(currentNotifications.count)")
         }
     }
 
     // MARK: count query helpers
 
-    private func updatePendingCount() {
-        currentCenter.getPendingNotificationRequests { requests in
-            self.printClassAndFunc(info: "Pending  \(requests.count)")
-            for request in requests {
-                print("  id: \(request.identifier)")
-            }
-            self.notificationCounts.pending = requests.count
-            self.updateDiagnosticCounts?(self.notificationCounts)
-            // this can be uncommented to prove that the bandge number can be modified this way
-            //  DispatchQueue.main.async {
-            //      UIApplication.shared.applicationIconBadgeNumber = requests.count
-            //  }
-        }
+    private func identifiersNotCurrent(in notifications: [UNNotification]) -> [String] {
+        let identifiers = notifications.map({ $0.request.identifier })
+        let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
+        return identifiersNotCurrent
     }
-
-    private func updateDeliveredCount() {
-        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
-            self.printClassAndFunc(info: "Delivered  \(notifications.count)")
-            for notification: UNNotification in notifications {
-                print("  id: \(notification.request.identifier)")
-            }
-            self.notificationCounts.delivered = notifications.count
-            self.updateDiagnosticCounts?(self.notificationCounts)
-            // this is next to useless because there is no callback when a notification is delivered while app is in background
-            // DispatchQueue.main.async {
-            //     UIApplication.shared.applicationIconBadgeNumber = notifications.count
-            // }
-        }
-    }
-
-    private func updateBothCounts() {
-        updatePendingCount()
-        updateDeliveredCount()
-    }
-
-//    func runForever() {
-//        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//            self.updateBadgeAndCounts()
-//        }
-//    }
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -184,7 +156,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
-        updateBothCounts()
+        retrieveDiagnosticCounts()
         updateBadgeAndCounts()
         completionHandler([.alert, .badge, .sound])
     }
@@ -194,5 +166,48 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         printClassAndFunc(info: "\(response.notification.request.identifier)")
         completionHandler()
+    }
+}
+
+// MARK: dispatch group
+
+extension NotificationManager {
+    // Using DispatchGroup to execute two asynchronous operations and then handle the results
+    func retrieveDiagnosticCounts() {
+        let dispatchGroup = DispatchGroup()
+
+        var diagnosticCounts = NotificationCounts(pending: -1, delivered: -1, current: -1)
+
+        dispatchGroup.enter()
+        center.getPendingNotificationRequests { pendingRequests in
+            for request in pendingRequests {
+                print("  id: \(request.identifier)")
+            }
+            self.printClassAndFunc(info: "Pending  \(pendingRequests.count)")
+
+            DispatchQueue.main.async {
+                diagnosticCounts.pending = pendingRequests.count
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.enter()
+        center.getDeliveredNotifications { notifications in
+            self.printClassAndFunc(info: "Delivered  \(notifications.count)")
+            for notification: UNNotification in notifications {
+                print("  id: \(notification.request.identifier)")
+            }
+            DispatchQueue.main.async {
+                diagnosticCounts.delivered = notifications.count
+                diagnosticCounts.current = self.identifiersNotCurrent(in: notifications).count
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            // do something with friends and events
+            self?.printClassAndFunc(info: diagnosticCounts.string)
+            self?.updateClientDiagnosticCounts?(diagnosticCounts)
+        }
     }
 }

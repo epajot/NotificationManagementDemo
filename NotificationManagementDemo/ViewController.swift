@@ -45,7 +45,7 @@ class ViewController: UIViewController {
         updateAddBookingButtonText()
 
         // initialize the callback to receive the counts
-        NotificationManager.shared.updateDiagnosticCounts = updateCountsLabel
+        NotificationManager.shared.updateClientDiagnosticCounts = updateCountsLabel
     }
 
     // MARK: UI interactions
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
 
     func updateCountsLabel(counts: NotificationCounts) {
         DispatchQueue.main.async {
-            self.countsLabel.text = "pending: \(counts.pending), delivered: \(counts.delivered)"
+            self.countsLabel.text = counts.string
         }
     }
 }
