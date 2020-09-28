@@ -14,52 +14,6 @@ struct NotificationCounts {
     var delivered: Int
 }
 
-struct DateTriplet: Codable {
-    var start: Date
-    var now: Date
-    var end: Date
-}
-
-struct TimeSpanNotification: Codable {
-    var title: String
-    var message: String
-    var start: Date
-    var end: Date
-
-    /**
-     observed on simulator and on iPhone:
-     - Date() returns a value that is about 0.025 seconds after a full second
-     - notification is delivered up to 0.7 s before the scheduled time
-     - so, diff = now.timeIntervalSince(start) is rarely positive, mostly negative
-     */
-    var isCurrent: Bool {
-        let now = Date()
-        let diff = now.timeIntervalSince(start)
-        let string: String? = DateTriplet(start: start, now: now, end: end).encode()
-        let isCurrent = start.incremented(by: .second, times: -2) <= now && now <= end
-        print("\(string!) isCurrent= \(isCurrent) diff= \(diff)")
-        return isCurrent
-    }
-}
-
-extension TimeSpanNotification {
-    init(title: String, body: String, timeSpan: DateInterval) {
-        self.title = title
-        message = body
-        start = timeSpan.start
-        end = timeSpan.end
-    }
-
-    init?(from string: String) {
-        guard let this = Self.decode(from: string) else { return nil }
-        self = this
-    }
-
-    var string: String? {
-        return encode()
-    }
-}
-
 class NotificationManager: NSObject {
     // MARK: private vars
 
@@ -109,9 +63,10 @@ class NotificationManager: NSObject {
         content.title = title
         content.subtitle = ""
         content.body = body
-        content.categoryIdentifier = "message"
-        content.badge = 1 // EP's Badge Test
-        content.sound = UNNotificationSound.default // EP's Badge Test
+        content.categoryIdentifier = "alarm"
+        content.badge = 1
+        content.sound = UNNotificationSound.default
+        content.userInfo = [:]
 
         // set a calendar trigger
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: interval.start)
@@ -129,7 +84,6 @@ class NotificationManager: NSObject {
             if let error = error {
                 self.printClassAndFunc(info: "\(String(describing: error))")
             } else {
-                // DispatchQueue.main.async { self.updateCounts() }
                 self.updatePendingCount()
             }
         }
@@ -159,13 +113,23 @@ class NotificationManager: NSObject {
         }
     }
 
-    func updateBadge() {
+    func updateBadgeAndCounts() {
         UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
-            let currentBookings = notifications.filter { (TimeSpanNotification(from: $0.request.identifier)?.isCurrent ?? false) }
+
+            // update badge count to the number of current notifications
+
+            let currentNotifications = notifications.filter { (TimeSpanNotification(from: $0.request.identifier)?.isCurrent ?? false) }
             DispatchQueue.main.async {
-                UIApplication.shared.applicationIconBadgeNumber = currentBookings.count
+                UIApplication.shared.applicationIconBadgeNumber = currentNotifications.count
             }
-            self.printClassAndFunc(info: "Delivered: \(notifications.count) current: \(currentBookings.count)")
+
+            // remove obsolete (not current) notifications
+
+            let identifiers = notifications.map({ $0.request.identifier })
+            let identifiersNotCurrent = identifiers.filter({ !(TimeSpanNotification(from: $0)?.isCurrent ?? true) })
+            self.currentCenter.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
+
+            self.printClassAndFunc(info: "delivered: \(notifications.count) current: \(currentNotifications.count)")
         }
     }
 
@@ -180,9 +144,9 @@ class NotificationManager: NSObject {
             self.notificationCounts.pending = requests.count
             self.updateDiagnosticCounts?(self.notificationCounts)
             // this can be uncommented to prove that the bandge number can be modified this way
-            //            DispatchQueue.main.async {
-            //                UIApplication.shared.applicationIconBadgeNumber = requests.count
-            //            }
+            //  DispatchQueue.main.async {
+            //      UIApplication.shared.applicationIconBadgeNumber = requests.count
+            //  }
         }
     }
 
@@ -195,9 +159,9 @@ class NotificationManager: NSObject {
             self.notificationCounts.delivered = notifications.count
             self.updateDiagnosticCounts?(self.notificationCounts)
             // this is next to useless because there is no callback when a notification is delivered while app is in background
-            //            DispatchQueue.main.async {
-            //                UIApplication.shared.applicationIconBadgeNumber = notifications.count
-            //            }
+            // DispatchQueue.main.async {
+            //     UIApplication.shared.applicationIconBadgeNumber = notifications.count
+            // }
         }
     }
 
@@ -206,11 +170,11 @@ class NotificationManager: NSObject {
         updateDeliveredCount()
     }
 
-    func runForever() {
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.updateBadge()
-        }
-    }
+//    func runForever() {
+//        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//            self.updateBadgeAndCounts()
+//        }
+//    }
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -221,7 +185,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         printClassAndFunc()
         updateBothCounts()
-        updateBadge()
+        // updateBadge()
         completionHandler([.alert, .badge, .sound])
     }
 
