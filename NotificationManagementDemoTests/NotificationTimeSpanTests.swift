@@ -1,5 +1,5 @@
 //
-//  NotificationTimeSpanTests.swift
+//  NotificationTimeSpanTests.swift v.0.2.0
 //  StickPlanTests
 //
 //  Created by Rudolf Farkas on 24.09.20.
@@ -13,7 +13,7 @@ class NotificationTimeSpanTests: XCTestCase {
 
     override func tearDownWithError() throws {}
 
-    func test_TimeSpanNotification() {
+    func test_NotificationTimeSpan() {
         let calendar = Calendar.current
         let refDate = calendar.date(from: DateComponents(calendar: calendar, year: 2020, month: 1, day: 28, hour: 14))!
         let interval = DateInterval(start: refDate, duration: 7200)

@@ -1,5 +1,5 @@
 //
-//  NotificationManager.swift
+//  NotificationManager.swift v.0.2.0
 //  StickPlan
 //
 //  Created by Eric PAJOT on 11.09.20.
@@ -97,6 +97,7 @@ class NotificationManager: NSObject {
     /// Remove a pending notificaton
     /// - Parameter id: target notification id
     func removeNotificationRequest(with id: String) {
+        printClassAndFunc(info: id)
         // executes asynchronously, has no callback to report completion
         center.removePendingNotificationRequests(withIdentifiers: [id])
         // this launches query for pending notifications, there might be a race
