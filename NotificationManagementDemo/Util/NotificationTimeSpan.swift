@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RudifaUtilPkg
 
 struct NotificationTimeSpan: Codable, Equatable {
     var title: String
