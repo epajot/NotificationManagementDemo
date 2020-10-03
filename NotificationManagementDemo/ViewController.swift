@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RudifaUtilPkg
 
 struct Booking {
     var interval: DateInterval
