@@ -73,6 +73,18 @@
 			path = NotificationManagementDemoTests;
 			sourceTree = "<group>";
 		};
+		9D2561382544A2E200B9841A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E110DF251DDF4D1300A01E9A /* AppDelegate.swift */,
+				E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */,
+				E110DF291DDF4D1300A01E9A /* Main.storyboard */,
+				E110DF2E1DDF4D1300A01E9A /* LaunchScreen.storyboard */,
+				9D97D844250BE479007DF6E9 /* README.md */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		E110DF191DDF4D1300A01E9A = {
 			isa = PBXGroup;
 			children = (
@@ -94,14 +106,10 @@
 		E110DF241DDF4D1300A01E9A /* NotificationManagementDemo */ = {
 			isa = PBXGroup;
 			children = (
-				9D97D844250BE479007DF6E9 /* README.md */,
-				EA645CD8250FDB4B002FC84B /* NotificationManager.swift */,
-				E110DF251DDF4D1300A01E9A /* AppDelegate.swift */,
-				E110DF271DDF4D1300A01E9A /* ViewController.swift */,
-				E110DF291DDF4D1300A01E9A /* Main.storyboard */,
-				E110DF2C1DDF4D1300A01E9A /* Assets.xcassets */,
-				E110DF2E1DDF4D1300A01E9A /* LaunchScreen.storyboard */,
+				9D2561382544A2E200B9841A /* App */,
 				E110DF311DDF4D1300A01E9A /* Info.plist */,
+				EA645CD8250FDB4B002FC84B /* NotificationManager.swift */,
+				E110DF271DDF4D1300A01E9A /* ViewController.swift */,
 				EADF216E250FC8B7002CD916 /* Util */,
 			);
 			path = NotificationManagementDemo;
