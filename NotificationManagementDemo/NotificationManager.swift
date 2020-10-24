@@ -134,9 +134,6 @@ class NotificationManager: NSObject {
             let identifiers = delivered.map({ $0.request.identifier })
             let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
             self.center.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
-
-            self.retrieveDiagnosticCounts()
-
             self.printClassAndFunc(info: "delivered: \(delivered.count) current: \(currentNotifications.count)")
         }
     }
