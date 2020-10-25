@@ -9,6 +9,22 @@
 import Foundation
 import RudifaUtilPkg
 
+extension Date {
+    /// Return a dateTimeString with microsecond resolution
+    var ddMMyyyy_HHmmss_𝜇s: String {
+        let cal = Calendar.current
+        let comps = cal.dateComponents([.year, .month, .day, .hour, .minute, .second, .nanosecond],
+                                       from: self)
+        let microSeconds = lrint(Double(comps.nanosecond!) / 1000) // Divide by 1000 and round
+
+        let formatted = String(format: "%04ld-%02ld-%02ld %02ld:%02ld:%02ld.%06ld",
+                               comps.year!, comps.month!, comps.day!,
+                               comps.hour!, comps.minute!, comps.second!,
+                               microSeconds)
+        return formatted
+    }
+}
+
 struct NotificationTimeSpan: Codable, Equatable {
     var title: String
     var message: String
@@ -36,12 +52,23 @@ extension NotificationTimeSpan {
         end = timeSpan.end
     }
 
-    init?(from string: String) {
-        guard let this = Self.decode(from: string) else { return nil }
+    init?(from jsonString: String) {
+        guard let this = Self.decode(from: jsonString) else { return nil }
         self = this
     }
 
+    @available(*, unavailable, renamed: "jsonString")
     var string: String? {
         return encode()
+    }
+
+    var jsonString: String? {
+        return encode()
+    }
+}
+
+extension NotificationTimeSpan: CustomStringConvertible {
+    var description: String {
+        return "title= \(title), message= \(message), start= \(start.ddMMyyyy_HHmmss_𝜇s), end= \(end.ddMMyyyy_HHmmss_𝜇s)"
     }
 }

@@ -6,8 +6,8 @@
 //  Copyright © 2016 Steven Lipton. All rights reserved.
 //
 
-import UIKit
 import RudifaUtilPkg
+import UIKit
 
 struct Booking {
     var interval: DateInterval
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         tableView.reloadData()
 
         let title = "SomeCalendar"
-        let body = "Your booking Starts now"
+        let body = "Your booking starts now"
         NotificationManager.shared.addNotification(title: title, body: body, for: booking.interval)
     }
 
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
 
     func updateCountsLabel(counts: NotificationCounts) {
         DispatchQueue.main.async {
-            self.countsLabel.text = counts.string
+            self.countsLabel.text = counts.description
         }
     }
 }
@@ -109,7 +109,7 @@ extension ViewController: UITableViewDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
                 let removedBooking = self.bookings.remove(at: indexPath.row)
                 self.tableView.reloadData()
-                NotificationManager.shared.removeNotificationRequest(with: removedBooking.id)
+                NotificationManager.shared.removePendingNotificationRequests(with: removedBooking.id)
             })
             alert.addAction(UIAlertAction(title: "Cancel", style: .default) { _ in print("Cancel") })
             present(alert, animated: true)
