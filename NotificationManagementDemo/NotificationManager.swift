@@ -183,20 +183,16 @@ extension NotificationManager {
     // Using DispatchGroup to execute two asynchronous operations and then handle the results
     func retrieveDiagnosticCounts() {
         let dispatchGroup = DispatchGroup()
-
         var diagnosticCounts = NotificationCounts(pending: -1, delivered: -1, current: -1)
 
         dispatchGroup.enter()
         center.getPendingNotificationRequests { pendingRequests in
+            self.printClassAndFunc(info: "@Pending  \(pendingRequests.count)")
             for request in pendingRequests {
                 self.printClassAndFunc(info: "@pendingRequests: \(NotificationTimeSpan(from: request.identifier)!)")
             }
-            self.printClassAndFunc(info: "@Pending  \(pendingRequests.count)")
-
-            DispatchQueue.main.async {
-                diagnosticCounts.pending = pendingRequests.count
-                dispatchGroup.leave()
-            }
+            diagnosticCounts.pending = pendingRequests.count
+            dispatchGroup.leave()
         }
 
         dispatchGroup.enter()
@@ -205,18 +201,16 @@ extension NotificationManager {
             for notification: UNNotification in deliveredNotifications {
                 self.printClassAndFunc(info: "@deliveredNotifications: \(NotificationTimeSpan(from: notification.request.identifier)!)")
             }
-            DispatchQueue.main.async {
-                diagnosticCounts.delivered = deliveredNotifications.count
-                diagnosticCounts.current = self.identifiersCurrent(in: deliveredNotifications).count
-                dispatchGroup.leave()
-            }
+            diagnosticCounts.delivered = deliveredNotifications.count
+            diagnosticCounts.current = self.identifiersCurrent(in: deliveredNotifications).count
+            dispatchGroup.leave()
         }
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            // do something with friends and events
-
             self?.printClassAndFunc(info: "@\(diagnosticCounts)")
-            self?.updateClientDiagnosticCounts?(diagnosticCounts)
+            DispatchQueue.main.async {
+                self?.updateClientDiagnosticCounts?(diagnosticCounts)
+            }
         }
     }
 }
