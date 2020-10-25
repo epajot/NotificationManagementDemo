@@ -140,9 +140,12 @@ class NotificationManager: NSObject {
 
     // MARK: count query helpers
 
-    private func identifiersNotCurrent(in notifications: [UNNotification]) -> [String] {
+    /// Return identifiers belonging to current notifications
+    /// - Parameter notifications: array to filter
+    /// - Returns: filtered array
+    private func identifiersCurrent(in notifications: [UNNotification]) -> [String] {
         let identifiers = notifications.map({ $0.request.identifier })
-        let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
+        let identifiersNotCurrent = identifiers.filter({ (NotificationTimeSpan(from: $0)?.isCurrent ?? false) })
         return identifiersNotCurrent
     }
 }
@@ -197,7 +200,7 @@ extension NotificationManager {
             }
             DispatchQueue.main.async {
                 diagnosticCounts.delivered = notifications.count
-                diagnosticCounts.current = self.identifiersNotCurrent(in: notifications).count
+                diagnosticCounts.current = self.identifiersCurrent(in: notifications).count
                 dispatchGroup.leave()
             }
         }
@@ -209,3 +212,4 @@ extension NotificationManager {
         }
     }
 }
+
