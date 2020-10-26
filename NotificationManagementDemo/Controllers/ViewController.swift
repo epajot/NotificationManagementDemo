@@ -66,11 +66,16 @@ class ViewController: UIViewController {
 
         let title = "SomeCalendar"
         let body = "Your booking starts now"
-        NotificationManager.shared.addNotification(title: title, body: body, for: booking.interval)
+        NotificationManager.shared.addNotification(title: title, message: body, for: booking.interval)
     }
 
-    @IBAction func removeAllDeliveredNotifications(_: UIButton) {
+    @IBAction func removeAll(_: UIButton) {
+        NotificationManager.shared.removeAllPendingNotificationRequests()
         NotificationManager.shared.removeAllDeliveredNotifications()
+        bookings = []
+        tableView.reloadData()
+        // reinitialize the callback to receive the counts
+        NotificationManager.shared.updateClientDiagnosticCounts = updateCountsLabel
     }
 
     func updateAddBookingButtonText() {

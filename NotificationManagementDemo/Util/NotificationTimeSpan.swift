@@ -26,10 +26,14 @@ extension Date {
 }
 
 struct NotificationTimeSpan: Codable, Equatable {
-    var title: String
-    var message: String
-    var start: Date
-    var end: Date
+    private(set) var title: String
+    private(set) var message: String
+    private(set) var start: Date
+    private(set) var end: Date
+
+    var interval: DateInterval {
+        DateInterval(start: start, end: end)
+    }
 
     /**
      observed on simulator and on iPhone:
@@ -45,9 +49,9 @@ struct NotificationTimeSpan: Codable, Equatable {
 }
 
 extension NotificationTimeSpan {
-    init(title: String, body: String, timeSpan: DateInterval) {
+    init(title: String, message: String, timeSpan: DateInterval) {
         self.title = title
-        message = body
+        self.message = message
         start = timeSpan.start
         end = timeSpan.end
     }
