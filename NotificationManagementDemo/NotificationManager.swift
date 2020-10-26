@@ -166,6 +166,11 @@ class NotificationManager: NSObject {
         retrieveDiagnosticCounts()
     }
 
+    /// Remove all pending notification requests
+    func removeAllPendingNotificationRequests() {
+        center.removeAllPendingNotificationRequests()
+    }
+
     /// Clear the list of delivered notifications
     func removeAllDeliveredNotifications() {
         center.removeAllDeliveredNotifications()

@@ -29,7 +29,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6CQ-TZ-mpF">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="36"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                <state key="normal" title="Remove All Delivered Notifications"/>
+                                                <state key="normal" title="Remove All"/>
                                                 <connections>
                                                     <action selector="removeAllDeliveredNotifications:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HcP-3W-Hq4"/>
                                                 </connections>

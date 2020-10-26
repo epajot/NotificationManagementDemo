@@ -70,7 +70,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func removeAllDeliveredNotifications(_: UIButton) {
+        NotificationManager.shared.removeAllPendingNotificationRequests()
         NotificationManager.shared.removeAllDeliveredNotifications()
+        bookings = []
+        tableView.reloadData()
+        // reinitialize the callback to receive the counts
+        NotificationManager.shared.updateClientDiagnosticCounts = updateCountsLabel
     }
 
     func updateAddBookingButtonText() {
