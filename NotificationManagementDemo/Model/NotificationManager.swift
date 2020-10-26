@@ -234,7 +234,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             addNotificationAtEndOf(oldNotification: notification)
         }
 
-        retrieveDiagnosticCounts()
         updateBadgeAndCounts()
     }
 
