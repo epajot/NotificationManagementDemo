@@ -140,7 +140,6 @@ class NotificationManager: NSObject {
             let identifiers = deliveredNotifications.map({ $0.request.identifier })
             let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
             self.center.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
-
             self.printClassAndFunc(info: "@delivered: \(deliveredNotifications.count) current: \(currentNotifications.count)")
         }
     }
@@ -152,8 +151,7 @@ class NotificationManager: NSObject {
     /// - Returns: filtered array
     private func identifiersCurrent(in notifications: [UNNotification]) -> [String] {
         let identifiers = notifications.map({ $0.request.identifier })
-        let identifiersNotCurrent = identifiers.filter({ (NotificationTimeSpan(from: $0)?.isCurrent ?? false) })
-        return identifiersNotCurrent
+        return identifiers.filter({ (NotificationTimeSpan(from: $0)?.isCurrent ?? false) })
     }
 }
 
