@@ -9,6 +9,25 @@
 import UIKit
 import UserNotifications
 
+extension UNMutableNotificationContent {
+    convenience init(from other: UNNotificationContent) {
+        self.init()
+        title = other.title
+        subtitle = other.subtitle
+        body = other.body
+        categoryIdentifier = other.categoryIdentifier
+        badge = nil
+        sound = nil
+        userInfo = ["end-of-booking": true]
+    }
+}
+
+extension UNNotification {
+    var isEndOfBooking: Bool {
+        request.content.userInfo["end-of-booking"] != nil
+    }
+}
+
 struct NotificationCounts: CustomStringConvertible {
     var pending: Int
     var delivered: Int
@@ -23,7 +42,6 @@ struct NotificationCounts: CustomStringConvertible {
         return "pending: \(pending), delivered: \(delivered), current: \(current)"
     }
 }
-
 
 extension UNCalendarNotificationTrigger {
     /// Innitialize an instance to trigger on the date, with seconds resolution
@@ -63,7 +81,24 @@ class NotificationManager: NSObject {
             }
             self.printClassAndFunc(info: granted ? "Notifications allowed" : "Notifications NOT allowed")
         }
-        // runForever() // experimental
+    }
+
+    private func addNotificationRequest(_ identifier: String, _ content: UNMutableNotificationContent, _ trigger: UNCalendarNotificationTrigger) {
+        // Create the request
+        let request = UNNotificationRequest(
+            identifier: identifier,
+            content: content,
+            trigger: trigger
+        )
+
+        // Schedule the request
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                self.printClassAndFunc(info: "\(String(describing: error))")
+            } else {
+                self.retrieveDiagnosticCounts()
+            }
+        }
     }
 
     /// Schedule a notification
@@ -94,21 +129,31 @@ class NotificationManager: NSObject {
         // set a calendar trigger
         let trigger = UNCalendarNotificationTrigger(dateWithSecondsResolution: interval.start, repeats: false)
 
-        // Create the request
-        let request = UNNotificationRequest(
-            identifier: identifier,
-            content: content,
-            trigger: trigger
-        )
+        addNotificationRequest(identifier, content, trigger)
+    }
 
-        // Schedule the request
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                self.printClassAndFunc(info: "\(String(describing: error))")
-            } else {
-                self.retrieveDiagnosticCounts()
-            }
+    /// Schedule a notification
+
+    /// Add a request with the same identifier, trigger at the interval.end and userInfo = ["endOfBooking": true]
+    /// - Parameter oldNotification: received notification
+    func addNotificationAtEndOf(oldNotification: UNNotification) {
+        if !authorized {
+            return
         }
+
+        let identifier = oldNotification.request.identifier
+
+        guard let notificationTS = NotificationTimeSpan(from: identifier) else {
+            printClassAndFunc(info: "*** failed to get NotificationTimeSpan from \(identifier)")
+            return
+        }
+
+        let content = UNMutableNotificationContent(from: oldNotification.request.content)
+
+        // set a calendar trigger
+        let trigger = UNCalendarNotificationTrigger(dateWithSecondsResolution: notificationTS.end, repeats: false)
+
+        addNotificationRequest(identifier, content, trigger)
     }
 
     /// Remove a pending notificaton
@@ -172,10 +217,18 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     // The method will be called on the delegate only if the application is in the foreground. If the method is not implemented or the handler is not called in a timely manner then the notification will not be presented. The application can choose to have the notification presented as a sound, badge, alert and/or in the notification list. This decision should be based on whether the information in the notification is otherwise visible to the user.
 
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        printClassAndFunc(info: "@")
+        printClassAndFunc(info: "@ userInfo= \(notification.request.content.userInfo), isEndOfBooking= \(notification.isEndOfBooking)")
+
+        if notification.isEndOfBooking {
+            completionHandler([])
+            center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+        } else {
+            completionHandler([.alert, .badge, .sound])
+            addNotificationAtEndOf(oldNotification: notification)
+        }
+
         retrieveDiagnosticCounts()
         updateBadgeAndCounts()
-        completionHandler([.alert, .badge, .sound])
     }
 
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
@@ -207,8 +260,10 @@ extension NotificationManager {
         dispatchGroup.enter()
         center.getDeliveredNotifications { deliveredNotifications in
             self.printClassAndFunc(info: "@Delivered  \(deliveredNotifications.count)")
-            for notification: UNNotification in deliveredNotifications {
-                self.printClassAndFunc(info: "@deliveredNotifications: \(NotificationTimeSpan(from: notification.request.identifier)!)")
+            for notification in deliveredNotifications {
+                if let ntSpan = NotificationTimeSpan(from: notification.request.identifier) {
+                    self.printClassAndFunc(info: "@deliveredNotifications: \(ntSpan)")
+                }
             }
             diagnosticCounts.delivered = deliveredNotifications.count
             diagnosticCounts.current = self.identifiersCurrent(in: deliveredNotifications).count
