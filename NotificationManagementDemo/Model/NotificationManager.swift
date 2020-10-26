@@ -84,14 +84,8 @@ class NotificationManager: NSObject {
     }
 
     private func addNotificationRequest(_ identifier: String, _ content: UNMutableNotificationContent, _ trigger: UNCalendarNotificationTrigger) {
-        // Create the request
-        let request = UNNotificationRequest(
-            identifier: identifier,
-            content: content,
-            trigger: trigger
-        )
-
-        // Schedule the request
+        // Create the request and schedule it
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 self.printClassAndFunc(info: "\(String(describing: error))")
@@ -133,7 +127,6 @@ class NotificationManager: NSObject {
     }
 
     /// Schedule a notification
-
     /// Add a request with the same identifier, trigger at the interval.end and userInfo = ["endOfBooking": true]
     /// - Parameter oldNotification: received notification
     func addNotificationAtEndOf(oldNotification: UNNotification) {
@@ -160,7 +153,7 @@ class NotificationManager: NSObject {
     /// - Parameter id: target notification id
     func removePendingNotificationRequests(with id: String) {
         printClassAndFunc(info: id)
-        // executes asynchronously, has no callback to report completion
+        // executes asynchronously; provides no callback to report completion
         center.removePendingNotificationRequests(withIdentifiers: [id])
         // this launches query for pending notifications, there might be a race
         retrieveDiagnosticCounts()
@@ -187,21 +180,20 @@ class NotificationManager: NSObject {
     }
 
     func updateBadgeAndCounts() {
-        UNUserNotificationCenter.current().getDeliveredNotifications { deliveredNotifications in
+        UNUserNotificationCenter.current().getDeliveredNotifications { [self] deliveredNotifications in
+
+            let current = self.identifiersCurrent(in: deliveredNotifications)
+            let obsolete = identifiersObsolete(in: deliveredNotifications)
 
             // update badge count to the number of current notifications
-
-            let currentNotifications = deliveredNotifications.filter { (NotificationTimeSpan(from: $0.request.identifier)?.isCurrent ?? false) }
             DispatchQueue.main.async {
-                UIApplication.shared.applicationIconBadgeNumber = currentNotifications.count
+                UIApplication.shared.applicationIconBadgeNumber = current.count
             }
 
-            // remove obsolete (not current) notifications
+            // remove obsolete notifications
+            self.center.removeDeliveredNotifications(withIdentifiers: obsolete)
 
-            let identifiers = deliveredNotifications.map({ $0.request.identifier })
-            let identifiersNotCurrent = identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
-            self.center.removeDeliveredNotifications(withIdentifiers: identifiersNotCurrent)
-            self.printClassAndFunc(info: "@delivered: \(deliveredNotifications.count) current: \(currentNotifications.count)")
+            self.printClassAndFunc(info: "@delivered: \(current.count) current: \(obsolete.count)")
         }
     }
 
@@ -214,7 +206,17 @@ class NotificationManager: NSObject {
         let identifiers = notifications.map({ $0.request.identifier })
         return identifiers.filter({ (NotificationTimeSpan(from: $0)?.isCurrent ?? false) })
     }
+
+    /// Return identifiers belonging to obsolete (not-current) notifications
+    /// - Parameter notifications: array to filter
+    /// - Returns: filtered array
+    private func identifiersObsolete(in notifications: [UNNotification]) -> [String] {
+        let identifiers = notifications.map({ $0.request.identifier })
+        return identifiers.filter({ !(NotificationTimeSpan(from: $0)?.isCurrent ?? true) })
+    }
 }
+
+// MARK: Delegate callbacks (from NotificationCenter)
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
     // MARK: feedback when app is running
@@ -222,7 +224,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     // The method will be called on the delegate only if the application is in the foreground. If the method is not implemented or the handler is not called in a timely manner then the notification will not be presented. The application can choose to have the notification presented as a sound, badge, alert and/or in the notification list. This decision should be based on whether the information in the notification is otherwise visible to the user.
 
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        printClassAndFunc(info: "@ userInfo= \(notification.request.content.userInfo), isEndOfBooking= \(notification.isEndOfBooking)")
+        printClassAndFunc(info: "@isEndOfBooking= \(notification.isEndOfBooking)")
 
         if notification.isEndOfBooking {
             completionHandler([])
@@ -244,32 +246,32 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     }
 }
 
-// MARK: dispatch group
+// MARK: diagnostic helpers
 
 extension NotificationManager {
-    // Using DispatchGroup to execute two asynchronous operations and then handle the results
     func retrieveDiagnosticCounts() {
+        // Using DispatchGroup to execute two asynchronous operations and then handle the results
         let dispatchGroup = DispatchGroup()
         var diagnosticCounts = NotificationCounts(pending: -1, delivered: -1, current: -1)
 
         dispatchGroup.enter()
         center.getPendingNotificationRequests { pendingRequests in
-            self.printClassAndFunc(info: "@Pending  \(pendingRequests.count)")
-            for request in pendingRequests {
-                self.printClassAndFunc(info: "@pendingRequests: \(NotificationTimeSpan(from: request.identifier)!)")
-            }
+            //            self.printClassAndFunc(info: "@Pending  \(pendingRequests.count)")
+            //            for request in pendingRequests {
+            //                 self.printClassAndFunc(info: "@pendingRequests: \(NotificationTimeSpan(from: request.identifier)!)")
+            //            }
             diagnosticCounts.pending = pendingRequests.count
             dispatchGroup.leave()
         }
 
         dispatchGroup.enter()
         center.getDeliveredNotifications { deliveredNotifications in
-            self.printClassAndFunc(info: "@Delivered  \(deliveredNotifications.count)")
-            for notification in deliveredNotifications {
-                if let ntSpan = NotificationTimeSpan(from: notification.request.identifier) {
-                    self.printClassAndFunc(info: "@deliveredNotifications: \(ntSpan)")
-                }
-            }
+            //            self.printClassAndFunc(info: "@Delivered  \(deliveredNotifications.count)")
+            //            for notification in deliveredNotifications {
+            //                if let ntSpan = NotificationTimeSpan(from: notification.request.identifier) {
+            //                    self.printClassAndFunc(info: "@deliveredNotifications: \(ntSpan)")
+            //                }
+            //            }
             diagnosticCounts.delivered = deliveredNotifications.count
             diagnosticCounts.current = self.identifiersCurrent(in: deliveredNotifications).count
             dispatchGroup.leave()

@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         NotificationManager.shared.addNotification(title: title, message: body, for: booking.interval)
     }
 
-    @IBAction func removeAllDeliveredNotifications(_: UIButton) {
+    @IBAction func removeAll(_: UIButton) {
         NotificationManager.shared.removeAllPendingNotificationRequests()
         NotificationManager.shared.removeAllDeliveredNotifications()
         bookings = []

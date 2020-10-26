@@ -86,6 +86,22 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		9D6D0EF9254710A500355FDA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E110DF271DDF4D1300A01E9A /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		9D6D0EFA254710C000355FDA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EA645CD8250FDB4B002FC84B /* NotificationManager.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		E110DF191DDF4D1300A01E9A = {
 			isa = PBXGroup;
 			children = (
@@ -109,8 +125,8 @@
 			children = (
 				9D2561382544A2E200B9841A /* App */,
 				E110DF311DDF4D1300A01E9A /* Info.plist */,
-				EA645CD8250FDB4B002FC84B /* NotificationManager.swift */,
-				E110DF271DDF4D1300A01E9A /* ViewController.swift */,
+				9D6D0EF9254710A500355FDA /* Controllers */,
+				9D6D0EFA254710C000355FDA /* Model */,
 				EADF216E250FC8B7002CD916 /* Util */,
 			);
 			path = NotificationManagementDemo;

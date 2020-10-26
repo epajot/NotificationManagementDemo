@@ -27,7 +27,7 @@ class NotificationTimeSpanTests: XCTestCase {
 
         guard let testIdentifier = testSpan.jsonString else { XCTFail(); return }
         XCTAssertEqual(testIdentifier, #"{"message":"booked","title":"SomeResource","end":625336925.28674698,"start":625329725.28674698}"#)
-//        XCTAssertEqual failed: ("{"title":"SomeResource","message":"booked","interval":{"start":625329725.28674698,"duration":7200}}") is not equal to ("{"message":"booked","title":"SomeResource","end":625336925.28674698,"start":625329725.28674698}")
+
         // recover a NotificationTimeSpan from the identifier and compare with the original
         let testSpan2 = NotificationTimeSpan(from: testIdentifier)
         XCTAssertEqual(testSpan, testSpan2)
