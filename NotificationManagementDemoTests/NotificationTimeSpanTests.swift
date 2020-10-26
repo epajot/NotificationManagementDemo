@@ -23,6 +23,7 @@ class NotificationTimeSpanTests: XCTestCase {
         let testSpan = NotificationTimeSpan(title: "SomeResource", message: "booked", start: testInterval.start, end: testInterval.end)
         XCTAssertEqual(testSpan.description, "title= SomeResource, message= booked, start= 2020-10-25 15:42:05.286747, end= 2020-10-25 17:42:05.286747")
         XCTAssertEqual("\(testSpan)", "title= SomeResource, message= booked, start= 2020-10-25 15:42:05.286747, end= 2020-10-25 17:42:05.286747")
+        XCTAssertEqual("\(testSpan.interval)", "2020-10-25 14:42:05 +0000 to 2020-10-25 16:42:05 +0000")
 
         guard let testIdentifier = testSpan.jsonString else { XCTFail(); return }
         XCTAssertEqual(testIdentifier, #"{"message":"booked","title":"SomeResource","end":625336925.28674698,"start":625329725.28674698}"#)
@@ -30,7 +31,7 @@ class NotificationTimeSpanTests: XCTestCase {
         // recover a NotificationTimeSpan from the identifier and compare with the original
         let testSpan2 = NotificationTimeSpan(from: testIdentifier)
         XCTAssertEqual(testSpan, testSpan2)
-        // XCTAssertFalse(testSpan.isCurrent)
+        XCTAssertFalse(testSpan.isCurrent)
     }
 
     func test_NotificationCounts() {

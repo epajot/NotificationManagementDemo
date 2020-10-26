@@ -24,6 +24,18 @@ struct NotificationCounts: CustomStringConvertible {
     }
 }
 
+
+extension UNCalendarNotificationTrigger {
+    /// Innitialize an instance to trigger on the date, with seconds resolution
+    /// - Parameters:
+    ///   - dateWithSecondsResolution: target date
+    ///   - repeats: as required
+    convenience init(dateWithSecondsResolution: Date, repeats: Bool) {
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: dateWithSecondsResolution)
+        self.init(dateMatching: dateComponents, repeats: false)
+    }
+}
+
 class NotificationManager: NSObject {
     // MARK: private vars
 
@@ -59,12 +71,12 @@ class NotificationManager: NSObject {
     ///   - title: for notification alert
     ///   - body: text for notification alert
     ///   - interval: the associated time period where interval.start is the notifucation trigger time
-    func addNotification(title: String, body: String, for interval: DateInterval) {
+    func addNotification(title: String, message: String, for interval: DateInterval) {
         if !authorized {
             return
         }
 
-        let notificationTimeSpan = NotificationTimeSpan(title: title, body: body, timeSpan: interval)
+        let notificationTimeSpan = NotificationTimeSpan(title: title, message: message, timeSpan: interval)
         printClassAndFunc(info: "@\(notificationTimeSpan)")
 
         guard let identifier = notificationTimeSpan.jsonString else { return }
@@ -73,15 +85,14 @@ class NotificationManager: NSObject {
         let content = UNMutableNotificationContent()
         content.title = title
         content.subtitle = ""
-        content.body = body
+        content.body = message
         content.categoryIdentifier = "alarm"
         content.badge = 1
         content.sound = UNNotificationSound.default
         content.userInfo = [:]
 
         // set a calendar trigger
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: interval.start)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateWithSecondsResolution: interval.start, repeats: false)
 
         // Create the request
         let request = UNNotificationRequest(

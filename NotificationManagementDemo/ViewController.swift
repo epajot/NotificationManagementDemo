@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 
         let title = "SomeCalendar"
         let body = "Your booking starts now"
-        NotificationManager.shared.addNotification(title: title, body: body, for: booking.interval)
+        NotificationManager.shared.addNotification(title: title, message: body, for: booking.interval)
     }
 
     @IBAction func removeAllDeliveredNotifications(_: UIButton) {
