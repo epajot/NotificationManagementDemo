@@ -31,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_: UIApplication) {
         NotificationManager.shared.updateBadgeAndCounts()
-        NotificationManager.shared.retrieveDiagnosticCounts()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
