@@ -193,7 +193,7 @@ class NotificationManager: NSObject {
             // remove obsolete notifications
             self.center.removeDeliveredNotifications(withIdentifiers: obsolete)
 
-            self.printClassAndFunc(info: "@delivered: \(current.count) current: \(obsolete.count)")
+            self.printClassAndFunc(info: "@delivered: \(deliveredNotifications.count) current: \(current.count)")
         }
     }
 
@@ -229,6 +229,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         if notification.isEndOfBooking {
             completionHandler([])
             center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+            retrieveDiagnosticCounts()
         } else {
             completionHandler([.alert, .badge, .sound])
             addNotificationAtEndOf(oldNotification: notification)
