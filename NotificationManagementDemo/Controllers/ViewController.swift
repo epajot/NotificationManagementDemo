@@ -60,13 +60,26 @@ class ViewController: UIViewController {
     }
 
     @IBAction func addBooking(_: Any) {
-        let booking = Booking(interval: DateInterval(start: Date().incremented(by: .second, times: startAfterSeconds), duration: TimeInterval(durationSeconds)))
-        bookings.append(booking)
-        tableView.reloadData()
+        let start = Date().incremented(by: .second, times: startAfterSeconds)
+        let booking1 = Booking(interval: DateInterval(start: start,
+                                                      duration: TimeInterval(durationSeconds)))
+        bookings.append(booking1)
+
 
         let title = "SomeCalendar"
         let body = "Your booking starts now"
-        NotificationManager.shared.addNotification(title: title, message: body, for: booking.interval)
+        NotificationManager.shared.addNotification(title: title, message: body, for: booking1.interval)
+
+        let secondBooking = true
+        if secondBooking {
+            let booking2 = Booking(interval: DateInterval(start: start,
+                                                          duration: TimeInterval(durationSeconds * 2)))
+            bookings.append(booking2)
+            NotificationManager.shared.addNotification(title: title, message: body, for: booking2.interval)
+        }
+
+        tableView.reloadData()
+
     }
 
     @IBAction func removeAll(_: UIButton) {

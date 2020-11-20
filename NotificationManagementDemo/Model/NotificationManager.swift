@@ -230,7 +230,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         if notification.isEndOfBooking {
             completionHandler([])
             center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-            updateBadgeAndCounts()
         } else {
             completionHandler([.alert, .badge, .sound])
             addNotificationAtEndOf(oldNotification: notification)
