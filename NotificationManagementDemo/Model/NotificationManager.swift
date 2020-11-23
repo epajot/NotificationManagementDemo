@@ -54,12 +54,16 @@ extension UNCalendarNotificationTrigger {
     }
 }
 
+/// MARK: NotificationManager
+
 class NotificationManager: NSObject {
     // MARK: private vars
 
     private let center = UNUserNotificationCenter.current()
 
     private(set) var authorized = false
+
+    private var notificationTimeSpansReceived: [NotificationTimeSpan] = []
 
     // MARK: public API
 
@@ -179,8 +183,13 @@ class NotificationManager: NSObject {
         }
     }
 
+    private func getReceivedNotificationCounts() -> NotificationCounts {
+        let timeSpansCurrent = notificationTimeSpansReceived.map{ $0.isCurrent}
+        return NotificationCounts(pending: 0, delivered: 0, current: timeSpansCurrent.count)
+    }
+
     func updateBadgeAndCounts() {
-        var diagnosticCounts = NotificationCounts(pending: -1, delivered: -1, current: -1)
+        var diagnosticCounts = getReceivedNotificationCounts()
 
         func current(in identifiers: [String]) -> [String] {
             return identifiers.filter({ (NotificationTimeSpan(from: $0)?.isCurrent ?? false) })
@@ -195,16 +204,17 @@ class NotificationManager: NSObject {
             let currentIdentifiers = current(in: identifiers)
             let obsoleteIdentifiers = obsolete(in: identifiers)
 
+            diagnosticCounts.delivered = delivered.count
+            diagnosticCounts.current += currentIdentifiers.count
+
             // update badge count to the number of current notifications
             DispatchQueue.main.async {
-                UIApplication.shared.applicationIconBadgeNumber = currentIdentifiers.count
+                UIApplication.shared.applicationIconBadgeNumber = diagnosticCounts.current
             }
 
             // remove obsolete notifications
             center.removeDeliveredNotifications(withIdentifiers: obsoleteIdentifiers)
 
-            diagnosticCounts.delivered = delivered.count
-            diagnosticCounts.current = currentIdentifiers.count
 
             center.getPendingNotificationRequests { pendingRequests in
                 diagnosticCounts.pending = pendingRequests.count
@@ -241,8 +251,11 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
 
     internal func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        printClassAndFunc(info: "@ identifier= \(response.notification.request.identifier)")
-        
+        let identifier = response.notification.request.identifier
+        if let timeSpan = NotificationTimeSpan(from: identifier) {
+            notificationTimeSpansReceived.append(timeSpan)
+        }
         completionHandler()
+        printClassAndFunc(info: "@ identifier= \(identifier), received count= \(notificationTimeSpansReceived.count)")
     }
 }
