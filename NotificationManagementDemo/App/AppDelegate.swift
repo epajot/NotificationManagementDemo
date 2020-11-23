@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
+        printClassAndFunc(info: "@")
         NotificationManager.shared.updateBadgeAndCounts()
     }
 
