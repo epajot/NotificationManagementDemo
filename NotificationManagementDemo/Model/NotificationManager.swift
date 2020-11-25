@@ -1,5 +1,5 @@
 //
-//  NotificationManager.swift v.0.2.0
+//  NotificationManager.swift v.0.3.0
 //  StickPlan
 //
 //  Created by Eric PAJOT on 11.09.20.
@@ -184,7 +184,7 @@ class NotificationManager: NSObject {
     }
 
     private func getReceivedNotificationCounts() -> NotificationCounts {
-        let timeSpansCurrent = notificationTimeSpansReceived.map{ $0.isCurrent}
+        let timeSpansCurrent = notificationTimeSpansReceived.filter{ $0.isCurrent }
         return NotificationCounts(pending: 0, delivered: 0, current: timeSpansCurrent.count)
     }
 

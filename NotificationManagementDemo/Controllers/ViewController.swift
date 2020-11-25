@@ -16,6 +16,12 @@ struct Booking {
     }
 }
 
+enum Mode {
+    case singleBooking
+    case twoSimultaneousBookings
+    case twoBookingsFollowingEachOther
+}
+
 class ViewController: UIViewController {
     // MARK: variables
 
@@ -61,25 +67,33 @@ class ViewController: UIViewController {
 
     @IBAction func addBooking(_: Any) {
         let start = Date().incremented(by: .second, times: startAfterSeconds)
-        let booking1 = Booking(interval: DateInterval(start: start,
-                                                      duration: TimeInterval(durationSeconds)))
+        let end = start.incremented(by: .second, times: durationSeconds)
+        let end2 = end.incremented(by: .second, times: durationSeconds)
+        let booking1 = Booking(interval: DateInterval(start: start, end: end))
         bookings.append(booking1)
-
 
         let title = "SomeCalendar"
         let body = "Your booking starts now"
         NotificationManager.shared.addNotification(title: title, message: body, for: booking1.interval)
 
-        let secondBooking = true
-        if secondBooking {
-            let booking2 = Booking(interval: DateInterval(start: start,
-                                                          duration: TimeInterval(durationSeconds * 2)))
+        var mode = Mode.twoBookingsFollowingEachOther
+
+        switch (mode) {
+        case .singleBooking:
+            break
+        case .twoSimultaneousBookings:
+            let booking2 = Booking(interval: DateInterval(start: start, end: end))
             bookings.append(booking2)
             NotificationManager.shared.addNotification(title: title, message: body, for: booking2.interval)
+            break
+        case .twoBookingsFollowingEachOther:
+            let booking2 = Booking(interval: DateInterval(start: end, end: end2))
+            bookings.append(booking2)
+            NotificationManager.shared.addNotification(title: title, message: body, for: booking2.interval)
+            break
         }
 
         tableView.reloadData()
-
     }
 
     @IBAction func removeAll(_: UIButton) {
